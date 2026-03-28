@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企業參訪抽獎 2026.03.31</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #D4AF37;
+      --gold-light: #F0D060;
+      --gold-dark: #A07820;
+      --deep: #0A0A0F;
+      --panel: #12121A;
+      --border: rgba(212,175,55,0.3);
+      --text: #EDE8DA;
+      --muted: #7A7060;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--deep);
+      color: var(--text);
+      font-family: 'Noto Serif TC', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Starfield background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(212,175,55,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(212,175,55,0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      opacity: 0;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; }
+      50% { opacity: var(--max-op, 0.6); }
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .event-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.8;
+    }
+
+    .title {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 32px 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+    }
+
+    .divider-diamond {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      opacity: 0.6;
+    }
+
+    /* Participants Grid */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+
+    .participant {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .participant::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(212,175,55,0.05) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .participant:hover::before { opacity: 1; }
+    .participant:hover {
+      border-color: rgba(212,175,55,0.5);
+      transform: translateY(-1px);
+    }
+
+    .participant.spinning {
+      animation: participantPulse 0.12s ease-in-out infinite;
+      border-color: var(--gold);
+      background: rgba(212,175,55,0.08);
+    }
+
+    .participant.winner {
+      border-color: var(--gold) !important;
+      background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05)) !important;
+      animation: none !important;
+    }
+
+    .participant.dimmed {
+      opacity: 0.25;
+      border-color: rgba(212,175,55,0.1);
+    }
+
+    @keyframes participantPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .num {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      min-width: 18px;
+    }
+
+    .name {
+      font-size: 13px;
+      letter-spacing: 0.03em;
+    }
+
+    /* Lottery Stage */
+    .stage {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px 32px;
+      text-align: center;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stage::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .display-area {
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .rolling-name {
+      font-size: clamp(32px, 6vw, 54px);
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: var(--gold-light);
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.1s;
+      text-shadow: 0 0 40px rgba(212,175,55,0.3);
+    }
+
+    .rolling-name.idle {
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+    }
+
+    .winner-announce {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .winner-announce.visible {
+      display: flex;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .winner-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      opacity: 0.8;
+    }
+
+    .winner-name {
+      font-size: clamp(40px, 7vw, 64px);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #FFF0A0, var(--gold), var(--gold-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 2s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+
+    .winner-tag {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+    }
+
+    /* Confetti */
+    .confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      top: -10px;
+      opacity: 0;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 14px 36px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--deep);
+      box-shadow: 0 4px 20px rgba(212,175,55,0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(212,175,55,0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(212,175,55,0.08);
+      border-color: var(--gold);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      margin-top: 40px;
+      opacity: 0.5;
+    }
+
+    /* Gold particles */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+      border-radius: 50%;
+      animation: floatUp 2s ease-out forwards;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-200px) scale(0); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="confetti-container" id="confetti"></div>
+
+<div class="wrapper">
+  <div class="header">
+    <div class="event-date">2026 · 03 · 31 &nbsp;|&nbsp; 企業參訪</div>
+    <h1 class="title">幸運抽獎</h1>
+    <p class="subtitle">共 28 位參與者・等待命運的眷顧</p>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="section-label">▸ 參與名單 PARTICIPANTS</div>
+  <div class="grid" id="grid"></div>
+
+  <div class="stage">
+    <div class="display-area" id="displayArea">
+      <div class="rolling-name idle" id="rollingName">✦ 按下抽獎開始 ✦</div>
+      <div class="winner-announce" id="winnerAnnounce">
+        <div class="winner-label">🏆 &nbsp;中獎者&nbsp; WINNER&nbsp; 🏆</div>
+        <div class="winner-name" id="winnerName"></div>
+        <div class="winner-tag" id="winnerTag"></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="drawBtn" onclick="startDraw()">✦ 開始抽獎</button>
+      <button class="btn btn-secondary" id="resetBtn" onclick="resetDraw()" disabled>重置</button>
+    </div>
+  </div>
+
+  <div class="footer">ALL PARTICIPANTS HAVE EQUAL PROBABILITY · FAIR DRAW SYSTEM</div>
+</div>
+
+<script>
+  const participants = [
+    { id: 1, name: '任浚佑' },
+    { id: 2, name: '賴信豪' },
+    { id: 3, name: '葉佳蓉' },
+    { id: 4, name: '林孜穎' },
+    { id: 5, name: '王健宇' },
+    { id: 6, name: '郭恂斈' },
+    { id: 7, name: '蔡宗穎' },
+    { id: 8, name: '柯庭揚' },
+    { id: 9, name: '蔡妍溱' },
+    { id: 10, name: '林哲佑' },
+    { id: 11, name: '張芷綺' },
+    { id: 12, name: '程俊宇' },
+    { id: 13, name: '陳羿堂' },
+    { id: 14, name: '呂祐任' },
+    { id: 15, name: '蔡惠雯' },
+    { id: 16, name: '曾雯琳' },
+    { id: 17, name: '謝承軒' },
+    { id: 18, name: '劉鎮寬' },
+    { id: 19, name: '邱筱甯' },
+    { id: 20, name: '王苡璇' },
+    { id: 21, name: '許檍瑾' },
+    { id: 22, name: '蔡幸芸' },
+    { id: 23, name: '黃以涓' },
+    { id: 24, name: '馬敏珊' },
+    { id: 25, name: '張瓊云' },
+    { id: 26, name: '王昱倫' },
+    { id: 27, name: '游鎧碩' },
+    { id: 28, name: '賴苡榕' },
+  ];
+
+  let isRunning = false;
+  let isDone = false;
+  let animFrame;
+
+  // Build stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%; top:${Math.random()*100}%;
+      --dur:${2+Math.random()*4}s;
+      --delay:${Math.random()*5}s;
+      --max-op:${0.2+Math.random()*0.5};
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // Build grid
+  const grid = document.getElementById('grid');
+  participants.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'participant';
+    el.id = `p-${p.id}`;
+    el.innerHTML = `<span class="num">${String(p.id).padStart(2,'0')}</span><span class="name">${p.name}</span>`;
+    grid.appendChild(el);
+  });
+
+  function startDraw() {
+    if (isRunning || isDone) return;
+    isRunning = true;
+    document.getElementById('drawBtn').disabled = true;
+    document.getElementById('resetBtn').disabled = true;
+
+    const rollingEl = document.getElementById('rollingName');
+    const winnerAnnounce = document.getElementById('winnerAnnounce');
+    rollingEl.classList.remove('idle');
+    rollingEl.style.display = 'flex';
+    winnerAnnounce.classList.remove('visible');
+
+    // Highlight all
+    participants.forEach(p => {
+      const el = document.getElementById(`p-${p.id}`);
+      el.classList.remove('dimmed', 'winner', 'spinning');
+    });
+
+    const totalDuration = 4000;
+    const startTime = Date.now();
+    let lastIdx = -1;
+
+    function roll() {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / totalDuration, 1);
+
+      // Ease in speed: fast at start, slow at end
+      const interval = 60 + Math.pow(progress, 2.5) * 600;
+
+      const idx = Math.floor(Math.random() * participants.length);
+      const p = participants[idx];
+
+      if (lastIdx !== idx) {
+        if (lastIdx >= 0) {
+          document.getElementById(`p-${participants[lastIdx].id}`).classList.remove('spinning');
+        }
+        document.getElementById(`p-${p.id}`).classList.add('spinning');
+        rollingEl.textContent = p.name;
+        lastIdx = idx;
+      }
+
+      if (progress < 1) {
+        animFrame = setTimeout(roll, interval);
+      } else {
+        // Pick final winner using crypto for fairness
+        const array = new Uint32Array(1);
+        crypto.getRandomValues(array);
+        const winnerIdx = array[0] % participants.length;
+        const winner = participants[winnerIdx];
+
+        // Cleanup spinning
+        if (lastIdx >= 0) {
+          document.getElementById(`p-${participants[lastIdx].id}`).classList.remove('spinning');
+        }
+
+        setTimeout(() => revealWinner(winner), 200);
+      }
+    }
+
+    roll();
+  }
+
+  function revealWinner(winner) {
+    isDone = true;
+
+    const rollingEl = document.getElementById('rollingName');
+    const winnerAnnounce = document.getElementById('winnerAnnounce');
+
+    rollingEl.style.display = 'none';
+    document.getElementById('winnerName').textContent = winner.name;
+    document.getElementById('winnerTag').textContent = `No.${String(winner.id).padStart(2,'0')} · 2026年3月31日企業參訪`;
+    winnerAnnounce.classList.add('visible');
+
+    // Highlight winner, dim others
+    participants.forEach(p => {
+      const el = document.getElementById(`p-${p.id}`);
+      el.classList.remove('spinning');
+      if (p.id === winner.id) {
+        el.classList.add('winner');
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        el.classList.add('dimmed');
+      }
+    });
+
+    launchConfetti();
+    document.getElementById('resetBtn').disabled = false;
+    isRunning = false;
+  }
+
+  function resetDraw() {
+    if (isRunning) return;
+    clearTimeout(animFrame);
+    isDone = false;
+
+    const rollingEl = document.getElementById('rollingName');
+    const winnerAnnounce = document.getElementById('winnerAnnounce');
+
+    rollingEl.className = 'rolling-name idle';
+    rollingEl.style.display = '';
+    rollingEl.textContent = '✦ 按下抽獎開始 ✦';
+    winnerAnnounce.classList.remove('visible');
+
+    participants.forEach(p => {
+      const el = document.getElementById(`p-${p.id}`);
+      el.classList.remove('winner', 'dimmed', 'spinning');
+    });
+
+    document.getElementById('confetti').innerHTML = '';
+    document.getElementById('drawBtn').disabled = false;
+    document.getElementById('resetBtn').disabled = true;
+  }
+
+  function launchConfetti() {
+    const container = document.getElementById('confetti');
+    container.innerHTML = '';
+    const colors = ['#D4AF37', '#F0D060', '#FFF0A0', '#A07820', '#ffffff', '#FFD700'];
+    const shapes = ['◆', '✦', '★', '●', '▲', '◉'];
+
+    for (let i = 0; i < 80; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
+      const x = Math.random() * 100;
+      const delay = Math.random() * 1.5;
+      const size = 8 + Math.random() * 14;
+      const duration = 1.5 + Math.random() * 2;
+      const drift = (Math.random() - 0.5) * 200;
+
+      el.style.cssText = `
+        left: ${x}%;
+        top: -20px;
+        font-size: ${size}px;
+        color: ${color};
+        animation: confettiFall ${duration}s ease-in ${delay}s forwards;
+        --drift: ${drift}px;
+        opacity: 0;
+      `;
+      el.textContent = shape;
+      container.appendChild(el);
+    }
+
+    // Inject keyframes if not present
+    if (!document.getElementById('confettiStyle')) {
+      const style = document.createElement('style');
+      style.id = 'confettiStyle';
+      style.textContent = `
+        @keyframes confettiFall {
+          0% { opacity: 1; transform: translateY(0) translateX(0) rotate(0deg); }
+          100% { opacity: 0; transform: translateY(100vh) translateX(var(--drift)) rotate(720deg); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+</script>
+</body>
+</html>
