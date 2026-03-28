@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026企業參訪抽獎 · 3月31日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --deep: #0a0a0f;
+    --ink: #12121a;
+    --surface: #16161f;
+    --border: rgba(201,168,76,0.25);
+    --text: #e8e0cc;
+    --muted: #7a7060;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Noto Serif TC', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .event-label {
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+    display: block;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 58px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px auto;
+    max-width: 300px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .divider::after {
+    background: linear-gradient(to left, transparent, var(--gold));
+  }
+  .divider-diamond {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .drum-section {
+    position: relative;
+    margin: 0 auto 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .drum-wrapper {
+    position: relative;
+    width: 320px;
+    height: 180px;
+    margin-bottom: 32px;
+  }
+
+  .drum-border {
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .drum-border::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--surface), transparent);
+    z-index: 2;
+  }
+  .drum-border::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to top, var(--surface), transparent);
+    z-index: 2;
+  }
+
+  .drum-highlight {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0; right: 0;
+    height: 52px;
+    background: rgba(201,168,76,0.07);
+    border-top: 1px solid rgba(201,168,76,0.4);
+    border-bottom: 1px solid rgba(201,168,76,0.4);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .drum-roll {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .drum-item {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    width: 100%;
+    user-select: none;
+  }
+
+  .drum-item.center {
+    color: var(--gold-light);
+    font-size: 22px;
+  }
+
+  .corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .corner-tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; border-radius: 3px 0 0 0; }
+  .corner-tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; border-radius: 0 3px 0 0; }
+  .corner-bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; border-radius: 0 0 0 3px; }
+  .corner-br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; border-radius: 0 0 3px 0; }
+
+  .btn-draw {
+    position: relative;
+    padding: 16px 56px;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .btn-draw::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+
+  .btn-draw:hover::before { transform: scaleX(1); }
+  .btn-draw:hover { color: var(--deep); }
+  .btn-draw:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .result-card {
+    display: none;
+    margin: 40px auto 0;
+    max-width: 420px;
+    border: 1.5px solid var(--gold);
+    border-radius: 4px;
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(201,168,76,0.02));
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .result-card.visible { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-trophy {
+    font-size: 40px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .result-label {
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .result-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .result-index {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  .confetti-piece {
+    position: fixed;
+    opacity: 0;
+    animation: confettiFall 2.2s ease-in forwards;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  .participants-section {
+    margin-top: 64px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .participants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+  }
+
+  .participant-tag {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 3px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .participant-tag .num {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(201,168,76,0.4);
+    margin-bottom: 4px;
+  }
+
+  .participant-tag.winner {
+    background: rgba(201,168,76,0.12);
+    border-color: var(--gold);
+    color: var(--gold-light);
+    font-weight: 700;
+  }
+
+  .btn-reset {
+    display: none;
+    margin: 24px auto 0;
+    padding: 10px 32px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--muted);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .btn-reset:hover { border-color: var(--muted); color: var(--text); }
+  .btn-reset.visible { display: block; }
+
+  .footer {
+    text-align: center;
+    margin-top: 80px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <span class="event-label">2026 · 03 · 31 · 企業參訪</span>
+    <h1 class="title">抽 獎 典 禮</h1>
+    <p class="subtitle">共 28 位 參 與 者 · 均 等 機 率</p>
+    <div class="divider"><div class="divider-diamond"></div></div>
+  </header>
+
+  <div class="drum-section">
+    <div class="drum-wrapper">
+      <div class="drum-border">
+        <div class="drum-highlight"></div>
+        <div class="drum-roll" id="drumRoll"></div>
+      </div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+    </div>
+
+    <button class="btn-draw" id="btnDraw" onclick="startLottery()">
+      ✦ 開 始 抽 獎 ✦
+    </button>
+
+    <button class="btn-reset" id="btnReset" onclick="resetLottery()">
+      重 新 抽 獎
+    </button>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <span class="result-trophy">🏆</span>
+    <div class="result-label">恭 喜 得 獎 者</div>
+    <div class="result-name" id="resultName"></div>
+    <div class="result-index" id="resultIndex"></div>
+  </div>
+
+  <section class="participants-section">
+    <div class="section-title">全 部 參 與 者</div>
+    <div class="participants-grid" id="participantsGrid"></div>
+  </section>
+
+  <footer class="footer">2026 企業參訪活動抽獎系統</footer>
+
+</div>
+
+<script>
+const participants = [
+  "任浚佑","賴信豪","葉佳蓉","林孜穎","王健宇","郭恂斈","蔡宗穎","柯庭揚",
+  "蔡妍溱","林哲佑","張芷綺","程俊宇","陳羿堂","呂祐任","蔡惠雯","曾雯琳",
+  "謝承軒","劉鎮寬","邱筱甯","王以璇","許檍瑾","蔡幸芸","黃以涓","馬敏珊",
+  "張瓊云","王昱倫","游鎧碩","賴苡榕"
+];
+
+let isRunning = false;
+let winnerIndex = null;
+
+// Build participants grid
+const grid = document.getElementById('participantsGrid');
+participants.forEach((name, i) => {
+  const tag = document.createElement('div');
+  tag.className = 'participant-tag';
+  tag.id = `tag-${i}`;
+  tag.innerHTML = `<span class="num">${String(i+1).padStart(2,'0')}</span>${name}`;
+  grid.appendChild(tag);
+});
+
+function buildDrumItems(items) {
+  const drum = document.getElementById('drumRoll');
+  drum.innerHTML = '';
+  items.forEach((name, idx) => {
+    const item = document.createElement('div');
+    item.className = 'drum-item' + (idx === 2 ? ' center' : '');
+    item.textContent = name;
+    drum.appendChild(item);
+  });
+}
+
+function initDrum() {
+  const sample = [];
+  for (let i = 0; i < 5; i++) {
+    sample.push(participants[Math.floor(Math.random() * participants.length)]);
+  }
+  buildDrumItems(sample);
+}
+
+initDrum();
+
+function startLottery() {
+  if (isRunning) return;
+  isRunning = true;
+  document.getElementById('btnDraw').disabled = true;
+  document.getElementById('resultCard').classList.remove('visible');
+  document.getElementById('btnReset').classList.remove('visible');
+
+  if (winnerIndex !== null) {
+    document.getElementById(`tag-${winnerIndex}`)?.classList.remove('winner');
+    winnerIndex = null;
+  }
+
+  const winner = Math.floor(Math.random() * participants.length);
+  let tick = 0;
+  const totalTicks = 48 + Math.floor(Math.random() * 20);
+  let delay = 60;
+
+  function rollOnce() {
+    const centerIdx = Math.floor(Math.random() * participants.length);
+    buildDrumItems([
+      participants[(centerIdx - 2 + participants.length) % participants.length],
+      participants[(centerIdx - 1 + participants.length) % participants.length],
+      participants[centerIdx],
+      participants[(centerIdx + 1) % participants.length],
+      participants[(centerIdx + 2) % participants.length],
+    ]);
+
+    tick++;
+    if (tick >= totalTicks) {
+      buildDrumItems([
+        participants[(winner - 2 + participants.length) % participants.length],
+        participants[(winner - 1 + participants.length) % participants.length],
+        participants[winner],
+        participants[(winner + 1) % participants.length],
+        participants[(winner + 2) % participants.length],
+      ]);
+      isRunning = false;
+      winnerIndex = winner;
+      showResult(winner);
+      return;
+    }
+
+    if (tick > totalTicks * 0.6) {
+      delay = Math.min(delay * 1.06, 280);
+    }
+
+    setTimeout(rollOnce, delay);
+  }
+
+  rollOnce();
+}
+
+function showResult(idx) {
+  const name = participants[idx];
+  document.getElementById('resultName').textContent = name;
+  document.getElementById('resultIndex').textContent = `第 ${String(idx+1).padStart(2,'0')} 號 · ${name}`;
+
+  const card = document.getElementById('resultCard');
+  card.classList.remove('visible');
+  void card.offsetWidth;
+  card.classList.add('visible');
+  document.getElementById('btnReset').classList.add('visible');
+  document.getElementById(`tag-${idx}`)?.classList.add('winner');
+
+  setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+  launchConfetti();
+}
+
+function launchConfetti() {
+  const colors = ['#c9a84c','#f0d080','#fff8e0','#e8d5a3','#fffbe6'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = '-20px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      el.style.width = (6 + Math.random() * 6) + 'px';
+      el.style.height = (6 + Math.random() * 6) + 'px';
+      el.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+      el.style.animationDelay = (Math.random() * 0.5) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }, i * 20);
+  }
+}
+
+function resetLottery() {
+  if (winnerIndex !== null) {
+    document.getElementById(`tag-${winnerIndex}`)?.classList.remove('winner');
+    winnerIndex = null;
+  }
+  document.getElementById('resultCard').classList.remove('visible');
+  document.getElementById('btnReset').classList.remove('visible');
+  document.getElementById('btnDraw').disabled = false;
+  initDrum();
+}
+</script>
+</body>
+</html>
